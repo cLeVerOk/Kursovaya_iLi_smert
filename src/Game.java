@@ -22,8 +22,6 @@ public class Game extends Canvas implements Runnable {
 	private boolean rightPressed = false;
 	public boolean downPressed = false;
 	private boolean upPressed = false;
-<<<<<<< Updated upstream
-=======
 	public boolean shiftPressed = false;
 	
 	long count_x_left = 0;
@@ -34,7 +32,6 @@ public class Game extends Canvas implements Runnable {
 	int multiplier = 1;
 	
 	static int fps = 120;
->>>>>>> Stashed changes
 	
 	public static Sprite hero;
 	private static int x = 0;
@@ -49,11 +46,9 @@ public class Game extends Canvas implements Runnable {
 			
 		while(running) {
 			delta = System.currentTimeMillis() - lastTime;
-<<<<<<< Updated upstream
 			lastTime = System.currentTimeMillis();	
 			update(delta);
 			render();
-=======
 			lastTime = System.currentTimeMillis();
 		    accumulator += delta;
 		    update(fps);
