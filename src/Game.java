@@ -46,14 +46,17 @@ public class Game extends Canvas implements Runnable {
 			
 		while(running) {
 			delta = System.currentTimeMillis() - lastTime;
-			lastTime = System.currentTimeMillis();	
-		    accumulator += delta + 1000/fps - 5;
-		    update(120);
-		    
+			lastTime = System.currentTimeMillis();
+			try {
+				Thread.sleep(7);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    accumulator += delta;
 			while(accumulator > 1000/fps){
-				render();
-		        accumulator -= 1000/fps;
-		        if(accumulator < 0) accumulator = 0;
+			    update(fps);
+		        accumulator = 0;
 		    }
 		}
 	}
@@ -97,35 +100,36 @@ public class Game extends Canvas implements Runnable {
 	public void update(long fps) {
 		if (leftPressed == true) {
 			count_x_left++;
-			if(count_x_left == fps / 15) {
-				x--;
+			if(count_x_left == fps / 60) {
+				x-=2;
 				count_x_left = 0;
 			}
 		}
 
 		if (rightPressed == true) {
 			count_x_right++;
-			if(count_x_right == fps / 15) {
-				x++;
+			if(count_x_right == fps / 60) {
+				x+=2;
 				count_x_right = 0;
 			}
 		}
 		
 		if (upPressed == true) {
 			count_y_up++;
-			if(count_y_up == fps / 15) {
-				y--;
+			if(count_y_up == fps / 60) {
+				y-=2;
 				count_y_up = 0;
 			}
 		}
 		
 		if (downPressed == true) {
 			count_y_down++;
-			if(count_y_down == fps / 15) {
-				y++;
+			if(count_y_down == fps / 60) {
+				y+=2;
 				count_y_down = 0;
 			}
 		}
+		render();
 	}
 	
 	public static void main(String[] args) {
