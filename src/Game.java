@@ -22,6 +22,12 @@ public class Game extends Canvas implements Runnable {
 	private boolean rightPressed = false;
 	public boolean downPressed = false;
 	private boolean upPressed = false;
+	int count_x_left = 0;
+	int count_x_right = 0;
+	int count_y_up = 0;
+	int count_y_down = 0;
+	
+	static int fps = 30;
 	
 	public static Sprite hero;
 	private static int x = 0;
@@ -31,14 +37,18 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		long lastTime = System.currentTimeMillis();
 		long delta;
+		double accumulator = 0;
 		
 		init();
 			
 		while(running) {
 			delta = System.currentTimeMillis() - lastTime;
-			lastTime = System.currentTimeMillis();	
-			update(delta);
-			render();
+			lastTime = System.currentTimeMillis();
+		    accumulator += delta;
+			while(accumulator > 1.0/fps){
+		        update(fps);
+		        accumulator -= 1.0/fps;
+		    }
 		}
 	}
 		
@@ -78,22 +88,40 @@ public class Game extends Canvas implements Runnable {
 		bs.show(); //показать
 	}
 		
-	public void update(long delta) {
+	public void update(long fps) {
+
 		if (leftPressed == true) {
-			x--;
+			count_x_left++;
+			if(count_x_left == 10 * fps/30) {
+				x--;
+				count_x_left = 0;
+			}
 		}
 
 		if (rightPressed == true) {
-			x++;
+			count_x_right++;
+			if(count_x_right == 10 * fps/30) {
+				x++;
+				count_x_right = 0;
+			}
 		}
 		
 		if (upPressed == true) {
-			y--;
+			count_y_up++;
+			if(count_y_up == 10 * fps/30) {
+				y--;
+				count_y_up = 0;
+			}
 		}
 		
 		if (downPressed == true) {
-			y++;
+			count_y_down++;
+			if(count_y_down == 10 * fps/30) {
+				y++;
+				count_y_down = 0;
+			}
 		}
+		render();
 	}
 	
 	public static void main(String[] args) {
