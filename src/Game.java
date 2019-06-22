@@ -22,6 +22,19 @@ public class Game extends Canvas implements Runnable {
 	private boolean rightPressed = false;
 	public boolean downPressed = false;
 	private boolean upPressed = false;
+<<<<<<< Updated upstream
+=======
+	public boolean shiftPressed = false;
+	
+	long count_x_left = 0;
+	long count_x_right = 0;
+	long count_y_up = 0;
+	long count_y_down = 0;
+	
+	int multiplier = 1;
+	
+	static int fps = 120;
+>>>>>>> Stashed changes
 	
 	public static Sprite hero;
 	private static int x = 0;
@@ -36,9 +49,21 @@ public class Game extends Canvas implements Runnable {
 			
 		while(running) {
 			delta = System.currentTimeMillis() - lastTime;
+<<<<<<< Updated upstream
 			lastTime = System.currentTimeMillis();	
 			update(delta);
 			render();
+=======
+			lastTime = System.currentTimeMillis();
+		    accumulator += delta;
+		    update(fps);
+		    
+			while(accumulator > 1000/fps){
+				render();
+		        accumulator -= 1000/fps;
+		        if(accumulator < 0) accumulator = 0;
+		    }
+>>>>>>> Stashed changes
 		}
 	}
 		
@@ -94,6 +119,10 @@ public class Game extends Canvas implements Runnable {
 		if (downPressed == true) {
 			y++;
 		}
+<<<<<<< Updated upstream
+=======
+		
+>>>>>>> Stashed changes
 	}
 	
 	public static void main(String[] args) {
