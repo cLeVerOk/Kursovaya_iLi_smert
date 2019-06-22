@@ -29,6 +29,7 @@ public class Game extends Canvas implements Runnable {
 	long count_y_up = 0;
 	long count_y_down = 0;
 	
+	int accumulator = 0;
 	int multiplier = 1;
 	
 	static int fps = 120;
@@ -37,7 +38,6 @@ public class Game extends Canvas implements Runnable {
 	private static int x = 0;
 	private static int y = 0;
 
-	@Override
 	public void run() {
 		long lastTime = System.currentTimeMillis();
 		long delta;
@@ -47,18 +47,14 @@ public class Game extends Canvas implements Runnable {
 		while(running) {
 			delta = System.currentTimeMillis() - lastTime;
 			lastTime = System.currentTimeMillis();	
-			update(delta);
-			render();
-			lastTime = System.currentTimeMillis();
-		    accumulator += delta;
-		    update(fps);
+		    accumulator += delta + 1000/fps - 5;
+		    update(120);
 		    
 			while(accumulator > 1000/fps){
 				render();
 		        accumulator -= 1000/fps;
 		        if(accumulator < 0) accumulator = 0;
 		    }
->>>>>>> Stashed changes
 		}
 	}
 		
@@ -98,26 +94,38 @@ public class Game extends Canvas implements Runnable {
 		bs.show(); //показать
 	}
 		
-	public void update(long delta) {
+	public void update(long fps) {
 		if (leftPressed == true) {
-			x--;
+			count_x_left++;
+			if(count_x_left == fps / 15) {
+				x--;
+				count_x_left = 0;
+			}
 		}
 
 		if (rightPressed == true) {
-			x++;
+			count_x_right++;
+			if(count_x_right == fps / 15) {
+				x++;
+				count_x_right = 0;
+			}
 		}
 		
 		if (upPressed == true) {
-			y--;
+			count_y_up++;
+			if(count_y_up == fps / 15) {
+				y--;
+				count_y_up = 0;
+			}
 		}
 		
 		if (downPressed == true) {
-			y++;
+			count_y_down++;
+			if(count_y_down == fps / 15) {
+				y++;
+				count_y_down = 0;
+			}
 		}
-<<<<<<< Updated upstream
-=======
-		
->>>>>>> Stashed changes
 	}
 	
 	public static void main(String[] args) {
