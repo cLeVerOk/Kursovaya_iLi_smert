@@ -22,12 +22,16 @@ public class Game extends Canvas implements Runnable {
 	private boolean rightPressed = false;
 	public boolean downPressed = false;
 	private boolean upPressed = false;
-	int count_x_left = 0;
-	int count_x_right = 0;
-	int count_y_up = 0;
-	int count_y_down = 0;
+	public boolean shiftPressed = false;
 	
-	static int fps = 30;
+	long count_x_left = 0;
+	long count_x_right = 0;
+	long count_y_up = 0;
+	long count_y_down = 0;
+	
+	int multiplier = 1;
+	
+	static int fps = 75;
 	
 	public static Sprite hero;
 	private static int x = 0;
@@ -45,9 +49,10 @@ public class Game extends Canvas implements Runnable {
 			delta = System.currentTimeMillis() - lastTime;
 			lastTime = System.currentTimeMillis();
 		    accumulator += delta;
-			while(accumulator > 1.0/fps){
+			while(accumulator > 1000/fps){
 		        update(fps);
-		        accumulator -= 1.0/fps;
+		        accumulator -= 1000/fps;
+		        if(accumulator < 0) accumulator = 0;
 		    }
 		}
 	}
@@ -89,37 +94,25 @@ public class Game extends Canvas implements Runnable {
 	}
 		
 	public void update(long fps) {
-
+		if (shiftPressed == true) {
+			multiplier = 2;
+		}else if(shiftPressed == false) {
+			multiplier = 1;
+		}
 		if (leftPressed == true) {
-			count_x_left++;
-			if(count_x_left == 10 * fps/30) {
-				x--;
-				count_x_left = 0;
-			}
+				x-=2*multiplier;
 		}
 
 		if (rightPressed == true) {
-			count_x_right++;
-			if(count_x_right == 10 * fps/30) {
-				x++;
-				count_x_right = 0;
-			}
+				x+=2*multiplier;
 		}
 		
 		if (upPressed == true) {
-			count_y_up++;
-			if(count_y_up == 10 * fps/30) {
-				y--;
-				count_y_up = 0;
-			}
+				y-=2*multiplier;
 		}
 		
 		if (downPressed == true) {
-			count_y_down++;
-			if(count_y_down == 10 * fps/30) {
-				y++;
-				count_y_down = 0;
-			}
+				y+=2*multiplier;
 		}
 		render();
 	}
@@ -161,6 +154,9 @@ public class Game extends Canvas implements Runnable {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				downPressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				shiftPressed = true;
+			}
 		} 	
 		public void keyReleased(KeyEvent e) { //клавиша отпущена
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -174,6 +170,9 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				downPressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				shiftPressed = false;
 			}
 		}
 	}
