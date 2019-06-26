@@ -4,6 +4,8 @@ public class Entity {
     public int Radius;
     public int MS;   //move speed
     public int DMG;
+    public int x;
+    public int y;
 
     public Entity(){
     }
@@ -44,6 +46,17 @@ public class Entity {
     public boolean IsNew(){
         return(this.ID = null);
     }
+    public int getx(){
+        return x;
+    }
+    public int gety(){
+        return y;
+    }
+    protected void setcoord(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
 
     @Override
     public String toString() {
