@@ -7,7 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Entity {
-    private int ID;
+
+	private int ID;
     public long HP;
     public int Radius;
     public int MS;   //move speed

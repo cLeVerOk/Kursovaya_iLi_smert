@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
@@ -24,15 +26,14 @@ public class Game extends Canvas implements Runnable {
 	public boolean upPressed = false;
 	public boolean downPressed = false;
 	public boolean shiftPressed = false;
+	public boolean spacePressed = false;
 	
 	
 	
 	static int fps = 75;
 	
-	public static Hero hero = new Hero(0, 0, 0, 0, 0, 0, 0, "man.png");
-	public static Entity[] field; 
-	private static int x = 0;
-	private static int y = 0;
+	public static Hero hero = new Hero(0, 0, 0, 0, 0, 0, 0, "bullet.png");
+	public static Entity[] field = new Entity[0];
 
 	@Override
 	public void run() {
@@ -75,6 +76,9 @@ public class Game extends Canvas implements Runnable {
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				shiftPressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				spacePressed = true;
+			}
 		} 	
 		public void keyReleased(KeyEvent e) { //клавиша отпущена
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -91,6 +95,9 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				shiftPressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				spacePressed = false;
 			}
 		}
 	}	
@@ -112,7 +119,10 @@ public class Game extends Canvas implements Runnable {
 	}
 		
 	public void update() {
-		hero.update(leftPressed, rightPressed, downPressed, upPressed, shiftPressed);
+		hero.update(leftPressed, rightPressed, downPressed, upPressed, shiftPressed, spacePressed);
+		for(int i = 0; i < field.length; i++) {
+			
+		}
 		render();
 	}
 	

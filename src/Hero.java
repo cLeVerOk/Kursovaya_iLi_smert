@@ -6,7 +6,7 @@ public class Hero extends Entity{
 	
 	private int multiplier = 1;
 
-	public void update(boolean leftPressed,boolean rightPressed,boolean downPressed,boolean upPressed,boolean shiftPressed) {
+	public void update(boolean leftPressed,boolean rightPressed,boolean downPressed,boolean upPressed,boolean shiftPressed, boolean spacePressed) {
 		if (shiftPressed == true) {
 			multiplier = 2;
 		}else if(shiftPressed == false) {
