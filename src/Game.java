@@ -2,39 +2,35 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
-	
+
 	private boolean running;
-	public static int WIDTH = 1200; //ширина
-	public static int HEIGHT = 600; //высота
+	public static int WIDTH = 1280; //ширина
+	public static int HEIGHT = 720; //высота
 	public static String NAME = "TEST_WINDOW"; //заголовок окна
-	private boolean leftPressed = false;
-	private boolean rightPressed = false;
-	public boolean downPressed = false;
-	private boolean upPressed = false;
-	public boolean shiftPressed = false;
+
 	
 	long count_x_left = 0;
 	long count_x_right = 0;
 	long count_y_up = 0;
 	long count_y_down = 0;
+	public boolean leftPressed = false;
+	public boolean rightPressed = false;
+	public boolean upPressed = false;
+	public boolean downPressed = false;
+	public boolean shiftPressed = false;
 	
-	int multiplier = 1;
+	
 	
 	static int fps = 75;
 	
-	public static Sprite hero;
-	public static Entity field; 
+	public static Hero hero = new Hero(0, 0, 0, 0, 0, 0, 0, "man.png");
+	public static Entity[] field; 
 	private static int x = 0;
 	private static int y = 0;
 
@@ -51,7 +47,7 @@ public class Game extends Canvas implements Runnable {
 			lastTime = System.currentTimeMillis();
 		    accumulator += delta;
 			while(accumulator > 1000/fps){
-		        update(fps);
+		        update();
 		        accumulator -= 1000/fps;
 		        if(accumulator < 0) accumulator = 0;
 		    }
@@ -60,88 +56,9 @@ public class Game extends Canvas implements Runnable {
 		
 	public void init() {
 		addKeyListener(new KeyInputHandler());
-		hero = getSprite("man.png");
 	}
 	
-		
-	private Sprite getSprite(String path) {
-
-		BufferedImage sourceImage = null;
-		try {
-			java.net.URL url = this.getClass().getClassLoader().getResource(path);
-			sourceImage = ImageIO.read(url);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Sprite sprite = new Sprite(Toolkit.getDefaultToolkit().createImage(sourceImage.getSource()));
-		return sprite;
-	}
-	
-
-	public void render() {
-		BufferStrategy bs = getBufferStrategy(); 
-		if (bs == null) {
-			createBufferStrategy(2); //создаем BufferStrategy для нашего холста
-			requestFocus();
-			return;
-		}
-			
-		java.awt.Graphics g = bs.getDrawGraphics(); //получаем Graphics из созданной нами BufferStrategy
-		g.setColor(Color.green); //выбрать цвет
-		g.fillRect(0, 0, getWidth(), getHeight()); //заполнить прямоугольник
-		hero.draw(g, x, y);
-		g.dispose();
-		bs.show(); //показать
-	}
-		
-	public void update(long fps) {
-		if (shiftPressed == true) {
-			multiplier = 2;
-		}else if(shiftPressed == false) {
-			multiplier = 1;
-		}
-		if (leftPressed == true) {
-				x-=2*multiplier;
-		}
-
-		if (rightPressed == true) {
-				x+=2*multiplier;
-		}
-		
-		if (upPressed == true) {
-				y-=2*multiplier;
-		}
-		
-		if (downPressed == true) {
-				y+=2*multiplier;
-		}
-		render();
-	}
-	
-	public static void main(String[] args) {
-		Game game = new Game();
-		game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-		JFrame frame = new JFrame(Game.NAME);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //выход из приложения по нажатию клавиши ESC
-		frame.setLayout(new BorderLayout());
-		frame.add(game, BorderLayout.CENTER); //добавляем холст на наш фрейм
-		frame.pack();
-		frame.setResizable(false);
-		frame.setVisible(true);
-		
-		
-		
-		game.start();
-	}
-	
-	public void start() {
-		running = true;
-		new Thread(this).start();
-	}
-	
-	private class KeyInputHandler extends KeyAdapter {
-
+	public class KeyInputHandler extends KeyAdapter {
 		public void keyPressed(KeyEvent e) { //клавиша нажата
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = true;
@@ -176,6 +93,48 @@ public class Game extends Canvas implements Runnable {
 				shiftPressed = false;
 			}
 		}
-	}
+	}	
 
+	public void render() {
+		BufferStrategy bs = getBufferStrategy(); 
+		if (bs == null) {
+			createBufferStrategy(2); //создаем BufferStrategy для нашего холста
+			requestFocus();
+			return;
+		}
+			
+		java.awt.Graphics g = bs.getDrawGraphics(); //получаем Graphics из созданной нами BufferStrategy
+		g.setColor(Color.green); //выбрать цвет
+		g.fillRect(0, 0, getWidth(), getHeight()); //заполнить прямоугольник
+		hero.draw(g);
+		g.dispose();
+		bs.show(); //показать
+	}
+		
+	public void update() {
+		hero.update(leftPressed, rightPressed, downPressed, upPressed, shiftPressed);
+		render();
+	}
+	
+	public static void main(String[] args) {
+		Game game = new Game();
+		game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+		JFrame frame = new JFrame(Game.NAME);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //выход из приложения по нажатию клавиши ESC
+		frame.setLayout(new BorderLayout());
+		frame.add(game, BorderLayout.CENTER); //добавляем холст на наш фрейм
+		frame.pack();
+		frame.setResizable(false);
+		frame.setVisible(true);
+		
+		
+		
+		game.start();
+	}
+	
+	public void start() {
+		running = true;
+		new Thread(this).start();
+	}
 }
