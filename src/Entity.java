@@ -8,6 +8,12 @@ public class Entity {
     public int y;
 
     public Entity(){
+        setID(int ID);
+        setHP(int HP);
+        setRad(int Radius);
+        setMS(int MS);
+        setDMG(int DMG);
+        setcoord(int x, int y);
     }
     protected Entity(int ID){
         this.ID = ID;
@@ -40,7 +46,7 @@ public class Entity {
     public int getDMG(){
         return DMG;
     }
-    protected void steDMG(int DMG){
+    protected void setDMG(int DMG){
         this.DMG = DMG;
     }
     public boolean IsNew(){
