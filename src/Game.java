@@ -17,7 +17,7 @@ public class Game extends Canvas implements Runnable {
 	private boolean running;
 	public static int WIDTH = 1200; //ширина
 	public static int HEIGHT = 600; //высота
-	public static String NAME = "TUTORIAL 1"; //заголовок окна
+	public static String NAME = "TEST_WINDOW"; //заголовок окна
 	private boolean leftPressed = false;
 	private boolean rightPressed = false;
 	public boolean downPressed = false;
@@ -34,6 +34,7 @@ public class Game extends Canvas implements Runnable {
 	static int fps = 75;
 	
 	public static Sprite hero;
+	public static Entity field; 
 	private static int x = 0;
 	private static int y = 0;
 
@@ -86,7 +87,7 @@ public class Game extends Canvas implements Runnable {
 		}
 			
 		java.awt.Graphics g = bs.getDrawGraphics(); //получаем Graphics из созданной нами BufferStrategy
-		g.setColor(Color.cyan); //выбрать цвет
+		g.setColor(Color.green); //выбрать цвет
 		g.fillRect(0, 0, getWidth(), getHeight()); //заполнить прямоугольник
 		hero.draw(g, x, y);
 		g.dispose();

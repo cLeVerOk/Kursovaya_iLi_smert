@@ -7,13 +7,13 @@ public class Entity {
     public int x;
     public int y;
 
-    public Entity(){
-        setID(int ID);
-        setHP(int HP);
-        setRad(int Radius);
-        setMS(int MS);
-        setDMG(int DMG);
-        setcoord(int x, int y);
+    public Entity(int ID,int HP,int Radius,int MS,int DMG,int x, int y){
+        setID(ID);
+        setHP(HP);
+        setRad(Radius);
+        setMS(MS);
+        setDMG(DMG);
+        setcoord(x, y);
     }
     protected Entity(int ID){
         this.ID = ID;
@@ -50,7 +50,8 @@ public class Entity {
         this.DMG = DMG;
     }
     public boolean IsNew(){
-        return(this.ID = null);
+    	this.ID = -1;
+        return(this.ID);
     }
     public int getx(){
         return x;
